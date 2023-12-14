@@ -1,0 +1,192 @@
+https://powerbi.microsoft.com/en-us/downloads/
+
+data imported from - https://github.com/dipalimarthak/Power-BI/blob/main/Apocolypse%20Food%20Prep.xlsx
+
+import excel, transform - 
+
+Date = Date_Purchased
+since Milk would not stay longer during Apolclypse, we filter it out
+
+close and apply
+
+
+
+========================================
+
+GOALS: 
+A. WHERE WE ARE SPENDING LEAST AMOUNT OF MONEY
+B. SHOULD I BUY ALL PRODUCTS FORM SAME PLACE OR SOME PRODUCTS AT CERTAIN STORES
+
+A. WHERE WE ARE SPENDING LEAST AMOUNT OF MONEY
+
+
+1. CHECK PRICE, STORE
+2. VISUALIZE AS BAR GRAPH
+3. FOR COLOR REPRESENTATION, DROP STORE TO LEGEND
+
+LEAST COSTCO, SO COSTCO
+
+1. PRODUCT, PRICE, STORE
+
+
+
+TITLE - VISUALIZATION - VISUAL - GENERAL
+
+VALUES - VISUALIZATION - VISUAL - DATA VALUES - OUTSIDE END(INSTEAD OF AUTO)
+						VALUE DECIMAL UNITS - NONE
+						
+================== USING POWER QUERY ======================
+https://github.com/dipalimarthak/Power-BI/blob/main/Apocolypse%20Food%20Prep%20-%20Power%20Query%20Editor%20Tutorial.xlsx
+
+
+
+================== USING POWER QUERY ======================
+INPORT PURCHASE OVERVIEW AND PIVOT TABLE
+REMOVE 1ST 2 COLUMNS FROM PURCHASE OVERVIEW
+TRANSFORM - USER FIRST ROW AS HEADERS
+CHANGE DATA TYPE OF 3-6 COLUMNS FROM DECIMAL TO FIX DECIMAL NUMBER
+FILTER LOCATION - REMOVE EMPTY
+DELETE GRAND TOTAL COLUMN
+SELECT ALL 4 DATE COLUMNS AND TRANSPOSE - UNPIVOT COLUMNS
+CHANGE DATATYPE COL 3 - DATE
+RENAME COL4 - PRUUUDUCT COST
+COL 1 - STORE
+LOCATION - STORE
+
+
+PIVOT TABLE-
+
+TRANSFORM - USE 1ST ROW AS HEADERS
+SELECT JAN-APR AND UNPIVOT
+
+CLOSE AND APPLY
+
+======================================== Create and Manage Relationships in Power BI ========================================
+data file - https://github.com/dipalimarthak/Power-BI/blob/main/Apocolypse%20Food%20Prep%20-%20Relationship%20Tutorial.xlsx
+
+drop in 3 tables - Apocalypse Sales, Apocalypse Store, Customer Information
+use cust id-customer id instead of customer-customer to join Apocalypse Sales-Customer Information
+
+cross filter direction - single/both(more accurate)
+
+make relationship active - this will turn the chosen relationship active between the 2 tables
+
+BUILD RELATIONSHIP FROM SCRATCH ------------------
+
+1. DELETE RELATIONSHIP LINKS
+2. DRAG CustomerID OVER CUST ID
+========================================  DAX (DATA ANALYSIS FUNCTION)in Power BI ========================================
+https://github.com/dipalimarthak/Power-BI/blob/main/Apocolypse%20Food%20Prep%20-%20DAX.xlsx
+
+REPORT TAB
+
+modeling tab - 
+COUNT OF SALES = COUNT('Apocolypse Sales'[Order ID])
+choose this measure to display
+build visual - table - 74
+------------
+now to see who is buying our product,
+under fields, choose Customer
+------------
+to see which product is selling the best
+new measure
+sum of Products sold = SUM('Apocolypse Sales'[Units Sold])
+check mark this measure, display as table
+
+follow the same for sum of Products sold = SUM('Apocolypse Sales'[Units Sold])
+------------
+
+now create new measure
+profit_column = (SUM('Apocolypse Store'[Price]) - SUM('Apocolypse Store'[Production Cost])) * SUM('Apocolypse Sales'[Units Sold])
+
+project it on a table and add customer to find which customer gives most profit
+------------
+
+now copy the measure
+
+under report
+home - new column
+'profit column' and USE BELOW FORMULA INSTEAD TO FIND INDIVIDUAL ROW RESULTS
+
+profit_column_sumx = SUMX('Apocolypse Sales',('Apocolypse Store'[Price] - 'Apocolypse Store'[Production Cost])* 'Apocolypse Sales'[Units Sold])
+
+------------
+DATE FUNCTIONS-
+
+
+DAY_OF_WEEK = WEEKDAY('Apocolypse Sales'[Date Purchased],2)
+2=MONDAY =1
+
+PLOT THIS MEASURE ' DAY OF WEEK' (Y AXIS) AGAINST UNITS SOLD ON  AXIS
+
+
+COMPARE THIS WIHT EXISTING MEASURES
+
+DATE PURCHASED VS UNITS ORDERED
+
+
+
+----------IF STATEMENT------------
+NEW COLUMN
+
+ORDER_SIZE = IF('Apocolypse Sales'[Units Sold]>25,"BIG ORDER","SMALL ORDER")
+
+
+====================== DRILL DOWN VISUALIZATIONS ==================
+https://github.com/dipalimarthak/Power-BI/blob/main/Apocolypse%20Food%20Prep%20-%20Drill%20Down.xlsx
+
+X AXIS-
+PLOT STORE AND PRICE IN BAR CHART
+
+Y AXIS-PRICE
+
+DROP STORE IN LEGEND
+
+---------
+CUSTOMER ID, ORDER ID - X AXIS
+UNITS SOLD - Y AXIS
+LEGEND - CUSTOMER
+
+====================== Conditional Formatting  ==================
+https://github.com/dipalimarthak/Power-BI/blob/main/Apocolypse%20Food%20Prep%20-%20Conditional%20Formatting.xlsx
+
+COLUMNS - PRICE, PRODUCT NAME
+RIGHT CLICK PRICE - 
+1. BACKGROUND COLOUR
+
+YOU CAN TRY DIFFERENT OPTIONS ON DIFFERENT COBINATION OF COLUMNS
+
+====================== BINS AND LIST ==================
+1. APOCALYPSE SALESRIGHT CLICK ON CUSTOMER COLUMN, NEW GROUP
+OR FROM FIELDS SECTION
+
+DEFAULT GROUP TYPE - LIST
+
+2. SELECT MULTIPLE VALUES AND THEN GROUP - ASSING A NAME TO THE GROUP
+REPEAT THE SAME FOR REMAINING 2 VALUES - ASSING A NAME TO THE GROUP
+
+SO THIS IS MUCH LIKE AN IF STATEMENT AND IS MUCH FASTER
+
+
+YOU CAN DO WITH NUMERICS ALSO (ORDER ID) - USE LIST, OR AGE - USE BINS, DATE PURCHASED - USE BINS ON MONTHS
+
+---VISUALIZATIONS---
+1. AGE(BIN) AND BUYER ID
+2. CUSTOMER (LIST), UNITS SOLD
+
+====================== Popular Visualizations in Power BI  ======================
+
+USED- 
+1. STACKED BAR  CHART (PRODUCT NAME, UNITS SOLD, LEGENDS - PRODUCT NAME)
+2. 100% STACKED COLUMN CHART (CUSTOMER, UNITS SOLD, LEGEND - PRODUCT NAME)
+3. LINE CHART (DATE PURCHASED, UNITS SOLD,LEGEND - PRODUCT NAME, FILTER ONLY MONTH AND DAYS, FILTER BASED ON PRODUCTS)
+4. LINE AND CLUSTERED COLUMN CHART
+X AXIS - PRODUCT NAME
+Y AXIS - Price
+LINE Y AZIS - PRODUCTION COST
+5. SCATTER CHART
+X - Price Y - Production COST
+VALUES, LEGEND - PRODUCT NAME
+6. DONUT CHART STATE, TOTAL PURCHASE
+7. CARD (TOTAL PURCHASED)
+8. TABLE - CUSTOMER, UNITS SOLD
